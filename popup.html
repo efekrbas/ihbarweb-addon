@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>İhbarWeb Gönderi Bildirici</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0d11;
+      --surface: #12151b;
+      --surface-elevated: #171b22;
+      --border: #222731;
+      --border-subtle: #1b2029;
+      --border-focus: #3b82f6;
+      --text: #f0f2f5;
+      --text-muted: #8b94a2;
+      --text-dim: #606875;
+      --accent: #f4212e;
+      --accent-muted: rgba(244, 33, 46, 0.12);
+      --success: #10b981;
+      --success-muted: rgba(16, 185, 129, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 350px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+    }
+
+    /* TOP HEADER */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .brand-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .brand-info h1 {
+      font-size: 14px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--text);
+    }
+
+    .brand-info p {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.2;
+      margin-top: 2px;
+    }
+
+    .version-tag {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-dim);
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* TELEMETRY METRICS */
+    .telemetry {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      padding: 10px 14px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      gap: 8px;
+    }
+
+    .metric-card {
+      display: flex;
+      flex-direction: column;
+      padding: 6px 8px;
+      background: var(--bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+    }
+
+    .metric-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+    }
+
+    .metric-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* MAIN CONTENT */
+    .content {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* SETTINGS CARD */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.15s ease;
+    }
+
+    .panel-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .panel-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .panel-summary-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-summary-left svg {
+      width: 14px;
+      height: 14px;
+      color: var(--text-muted);
+    }
+
+    .panel-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 12px;
+    }
+
+    .status-pill.connected {
+      background: var(--success-muted);
+      color: var(--success);
+    }
+
+    .status-pill.disconnected {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-dim);
+    }
+
+    .status-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .panel-body {
+      padding: 10px 12px 12px;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg);
+    }
+
+    .panel-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .api-input {
+      flex: 1;
+      height: 32px;
+      padding: 0 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 11px;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .api-input:focus {
+      border-color: var(--border-focus);
+    }
+
+    .api-input::placeholder {
+      color: var(--text-dim);
+    }
+
+    .btn-save {
+      height: 32px;
+      padding: 0 12px;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-save:hover {
+      background: #232832;
+      border-color: #3b4250;
+    }
+
+    .btn-save:active {
+      transform: scale(0.97);
+    }
+
+    .btn-save.saved {
+      background: var(--success-muted);
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .key-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: #60a5fa;
+      font-size: 10.5px;
+      text-decoration: none;
+    }
+
+    .key-link:hover {
+      text-decoration: underline;
+    }
+
+    /* STEP WORKFLOW */
+    .workflow {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .workflow-title {
+      font-size: 11px;
+      font-weight: 650;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 2px;
+    }
+
+    .workflow-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .step-tag {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text);
+      flex-shrink: 0;
+      margin-top: 1px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* CATEGORIES BENTO */
+    .categories-panel summary {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 8px;
+      padding: 8px 12px 10px;
+      background: var(--bg);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .cat-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      color: var(--text-muted);
+      line-height: 1.3;
+      padding: 2px 0;
+    }
+
+    .cat-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* FOOTER */
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px 12px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .footer a {
+      color: var(--text-muted);
+      font-size: 11px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .footer a:hover {
+      color: var(--text);
+    }
+
+    .footer-note {
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="brand">
+      <div class="brand-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2.5 4.5 5.4v5.5c0 4.9 3.2 9.1 7.5 10.6 4.3-1.5 7.5-5.7 7.5-10.6V5.4L12 2.5Z" />
+          <path d="M12 8v4.5m0 3v.5" />
+        </svg>
+      </div>
+      <div class="brand-info">
+        <h1>İhbarWeb</h1>
+        <p>Gönderi Bildirim Asistanı</p>
+      </div>
+    </div>
+    <span class="version-tag">v1.2.0</span>
+  </header>
+
+  <!-- TELEMETRY STATS -->
+  <section class="telemetry" aria-label="İhbar istatistikleri">
+    <div class="metric-card">
+      <span class="metric-value" id="totalReports">0</span>
+      <span class="metric-label">Toplam İhbar</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-value" id="todayReports">0</span>
+      <span class="metric-label">Bugün</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-value" id="savedPosts">0</span>
+      <span class="metric-label">Kayıtlı Tekil</span>
+    </div>
+  </section>
+
+  <!-- CONTENT -->
+  <main class="content">
+    <!-- AI CATEGORIZATION PANEL -->
+    <details class="panel" id="aiDetails">
+      <summary class="panel-summary">
+        <div class="panel-summary-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4m0 12v4M2 12h4m12 0h4" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          <span class="panel-title">AI İhlal & Kategori Analizi</span>
+        </div>
+        <span class="status-pill disconnected" id="apiStatus">
+          <span class="status-dot"></span>
+          <span id="apiStatusText">İsteğe Bağlı</span>
+        </span>
+      </summary>
+      <div class="panel-body">
+        <p class="panel-desc">Gemini AI, gönderiyi 5651 Sayılı Kanun kapsamındaki 9 katalog suç yönünden analiz eder. İhlal içermeyen paylaşımları engeller, ihlal varsa formu hazırlar.</p>
+        <div class="input-row">
+          <input type="password" class="api-input" id="apiKeyInput" autocomplete="off" spellcheck="false" placeholder="Gemini API anahtarını girin">
+          <button class="btn-save" id="saveApiKey" type="button">Kaydet</button>
+        </div>
+        <a class="key-link" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Ücretsiz Google AI Studio anahtarı al →</a>
+      </div>
+    </details>
+
+    <!-- WORKFLOW -->
+    <section class="workflow">
+      <div class="workflow-title">Hızlı Kullanım Akışı</div>
+      <div class="workflow-item">
+        <span class="step-tag">1</span>
+        <span>X veya LinkedIn'de bildirmek istediğiniz gönderiyi bulun.</span>
+      </div>
+      <div class="workflow-item">
+        <span class="step-tag">2</span>
+        <span>Gönderi menüsünden <strong>"İhbarWeb'e Bildir"</strong> seçeneğine tıklayın.</span>
+      </div>
+      <div class="workflow-item">
+        <span class="step-tag">3</span>
+        <span>İhlal kontrolü ve form otomatik doldurulur; kontrol edip gönderin.</span>
+      </div>
+    </section>
+
+    <!-- KATALOG SUÇLAR -->
+    <details class="panel categories-panel">
+      <summary class="panel-summary">
+        <div class="panel-summary-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+            <path d="M6 6h10M6 10h10" />
+          </svg>
+          <span class="panel-title">Kapsamdaki 9 Katalog Suç (5651/8)</span>
+        </div>
+      </summary>
+      <div class="category-grid">
+        <div class="cat-badge"><span class="cat-dot"></span>İntihara yönlendirme</div>
+        <div class="cat-badge"><span class="cat-dot"></span>Çocuk istismarı</div>
+        <div class="cat-badge"><span class="cat-dot"></span>Uyuşturucu madde</div>
+        <div class="cat-badge"><span class="cat-dot"></span>Tehlikeli madde</div>
+        <div class="cat-badge"><span class="cat-dot"></span>Müstehcenlik</div>
+        <div class="cat-badge"><span class="cat-dot"></span>Fuhuş</div>
+        <div class="cat-badge"><span class="cat-dot"></span>Kumar oynatma</div>
+        <div class="cat-badge"><span class="cat-dot"></span>Atatürk aleyhine suçlar</div>
+        <div class="cat-badge"><span class="cat-dot"></span>Yasadışı bahis</div>
+      </div>
+    </details>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <a href="https://www.ihbarweb.org.tr/" target="_blank" rel="noopener noreferrer">
+      <span>ihbarweb.org.tr</span>
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M7 17L17 7M17 7H7M17 7V17" />
+      </svg>
+    </a>
+    <span class="footer-note">5651 Sayılı Kanun Kapsamında</span>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

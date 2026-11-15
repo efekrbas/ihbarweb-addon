@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none">
+  <!-- Rounded Squircle Background -->
+  <rect x="2" y="2" width="124" height="124" rx="28" fill="#0F1218" stroke="#2D3440" stroke-width="2"/>
+  <rect x="6" y="6" width="116" height="116" rx="24" stroke="#F4212E" stroke-opacity="0.12" stroke-width="1.5"/>
+  
+  <!-- Shield Emblem -->
+  <path d="M64 26 L98 36 V62 C98 83.5 83.5 101.5 64 107 C44.5 101.5 30 83.5 30 62 V36 Z" 
+        fill="url(#shieldGrad)" stroke="#FF4D63" stroke-width="2" stroke-linejoin="round"/>
+  
+  <!-- Inner Beacon Symbol -->
+  <rect x="59.5" y="44" width="9" height="28" rx="4.5" fill="#FFFFFF"/>
+  <circle cx="64" cy="84" r="5" fill="#FFFFFF"/>
+
+  <defs>
+    <linearGradient id="shieldGrad" x1="64" y1="26" x2="64" y2="107" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF2B45"/>
+      <stop offset="1" stop-color="#D9162D"/>
+    </linearGradient>
+  </defs>
+</svg>

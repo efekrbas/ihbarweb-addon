@@ -1,0 +1,71 @@
+{
+  "manifest_version": 3,
+  "name": "İhbarWeb Gönderi Bildirici",
+  "description": "Twitter/X ve LinkedIn gönderilerini ihbarweb.org.tr üzerinden bildirme sürecini kolaylaştırın.",
+  "version": "1.2.0",
+  "author": "Efe Kırbaş",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://generativelanguage.googleapis.com/*",
+    "https://www.ihbarweb.org.tr/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://x.com/*",
+        "https://twitter.com/*"
+      ],
+      "js": [
+        "content-twitter.js"
+      ],
+      "css": [
+        "styles.css"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://www.linkedin.com/*",
+        "https://linkedin.com/*"
+      ],
+      "js": [
+        "content-linkedin.js"
+      ],
+      "css": [
+        "styles.css"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://ihbarweb.org.tr/*",
+        "https://www.ihbarweb.org.tr/*"
+      ],
+      "js": [
+        "content-ihbarweb.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  }
+}

@@ -1,0 +1,130 @@
+/* İhbarWeb Tweet Bildirici - Minimal Styles */
+/* Menü ve toast stilleri inline olarak ekleniyor, bu dosya boş kalabilir */
+/* İleride ek stil gerekirse buraya eklenebilir */
+
+[data-ihbarweb-action] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  min-height: 34px;
+  padding: 0 7px;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  color: rgb(113, 118, 123);
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+[data-ihbarweb-action]:hover,
+[data-ihbarweb-action]:focus-visible {
+  color: #f4212e;
+  background-color: rgba(244, 33, 46, 0.1);
+}
+
+[data-ihbarweb-action] svg {
+  display: block;
+  width: 18.75px;
+  height: 18.75px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+[data-ihbarweb="true"] span {
+  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  line-height: 20px !important;
+  font-style: normal !important;
+  letter-spacing: normal !important;
+  color: #f4212e !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+.ihbarweb-linkedin-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ihbarweb-linkedin-menu-item:hover,
+.ihbarweb-linkedin-menu-item:focus-visible {
+  background: rgba(0, 0, 0, 0.08);
+  outline: none;
+}
+
+.ihbarweb-linkedin-menu-item svg,
+.ihbarweb-linkedin-action svg {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* LinkedIn Gönderi İçi Butonu (Tıpkı X'teki gibi minimal yuvarlak kalkan ikonu) */
+.ihbarweb-linkedin-action-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  padding: 0 !important;
+  margin: 0 0 0 4px !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  color: #71767b !important;
+  cursor: pointer !important;
+  transition: color 0.18s ease, background-color 0.18s ease, transform 0.1s ease !important;
+  outline: none !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
+}
+
+.ihbarweb-linkedin-action-btn:hover,
+.ihbarweb-linkedin-action-btn:focus-visible {
+  color: #f4212e !important;
+  background-color: rgba(244, 33, 46, 0.1) !important;
+}
+
+.ihbarweb-linkedin-action-btn:active {
+  transform: scale(0.92) !important;
+}
+
+.ihbarweb-linkedin-action-btn svg {
+  display: block !important;
+  width: 19px !important;
+  height: 19px !important;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  transition: stroke 0.18s ease !important;
+}
+
+.ihbarweb-linkedin-action-btn[data-reported="true"] {
+  color: #2ecc71 !important;
+}
+
+.ihbarweb-linkedin-action-btn[data-reported="true"]:hover {
+  background-color: rgba(46, 204, 113, 0.1) !important;
+  color: #2ecc71 !important;
+}
